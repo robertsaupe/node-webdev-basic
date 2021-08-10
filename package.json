@@ -1,0 +1,59 @@
+{
+  "name": "node-webdev-basic",
+  "version": "0.0.0",
+  "description": "Basic Test/Develop Environment",
+  "main": "index.js",
+  "scripts": {
+    "clean": "gulp clean",
+    "clear": "gulp clear",
+    "build": "gulp build",
+    "release": "gulp release",
+    "beta": "gulp beta",
+    "alpha": "gulp alpha",
+    "test": "gulp test",
+    "dev_release": "gulp dev_release",
+    "dev_beta": "gulp dev_beta",
+    "dev_alpha": "gulp dev_alpha",
+    "dev_test": "gulp dev_test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robertsaupe/node-webdev-basic.git"
+  },
+  "keywords": [
+    "JavaScript",
+    "EJS",
+    "SASS",
+    "SCSS",
+    "GULP"
+  ],
+  "author": "Robert Saupe",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/robertsaupe/node-webdev-basic/issues"
+  },
+  "homepage": "https://github.com/robertsaupe/node-webdev-basic#readme",
+  "devDependencies": {
+    "autoprefixer": "^10.3.1",
+    "browser-sync": "^2.27.5",
+    "cssnano": "^5.0.7",
+    "del": "^6.0.0",
+    "fibers": "^5.0.0",
+    "fs": "^0.0.2",
+    "gulp": "^4.0.2",
+    "gulp-css-base64": "^2.0.0",
+    "gulp-ejs": "^5.1.0",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-imagemin": "^7.1.0",
+    "gulp-minify-inline": "^1.1.0",
+    "gulp-noop": "^1.0.1",
+    "gulp-plumber": "^1.2.1",
+    "gulp-postcss": "^9.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^5.0.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-terser-js": "^5.2.2",
+    "gulp-to-ico": "^1.0.0",
+    "sass": "^1.37.5"
+  }
+}
