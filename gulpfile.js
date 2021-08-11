@@ -36,41 +36,37 @@ const imagemin = require('gulp-imagemin');
 //#region Important Variables
 const src = './src';
 const build_root = './build';
-const build_stable = build_root + '/stable';
-const build_beta = build_root + '/beta';
-const build_alpha = build_root + '/alpha';
-const build_test = build_root + '/test';
-const build_unknown = build_root + '/unknown';
-let dest = build_unknown;
 let release_typ = "unknown";
+let dest = build_root + '/' + release_typ;
 let debugging = false;
 //#endregion
 
 //#region Essential Functions
 
 const dest_stable = (cb) => {
-    dest = build_stable;
     release_typ = "stable";
+    dest = build_root + '/' + release_typ;
+    debugging = false;
     return cb();
 };
 
 const dest_beta = (cb) => {
-    dest = build_beta;
     release_typ = "beta";
+    dest = build_root + '/' + release_typ;
     debugging = true;
     return cb();
 };
 
 const dest_alpha = (cb) => {
-    dest = build_alpha;
     release_typ = "alpha";
+    dest = build_root + '/' + release_typ;
     debugging = true;
     return cb();
 };
 
 const dest_test = (cb) => {
-    dest = build_test;
     release_typ = "test";
+    dest = build_root + '/' + release_typ;
     debugging = true;
     return cb();
 };
