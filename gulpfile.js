@@ -31,55 +31,68 @@ const terser = require('gulp-terser-js');
 const ico = require('gulp-to-ico');
 const imagemin = require('gulp-imagemin');
 
+// Package
+const package = require(`./package.json`);
+
 //#endregion
 
 //#region Important Variables
+
+// Date
+let date_ob = new Date();
+let day = ("0" + date_ob.getDate()).slice(-2);
+let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+let year = date_ob.getFullYear();
+let hours = ("0" + date_ob.getHours()).slice(-2);
+let minutes = ("0" + date_ob.getMinutes()).slice(-2);
+let seconds = ("0" + date_ob.getSeconds()).slice(-2);
+let date_format = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+let date_build = year + "-" + month + "-" + day;
+
+// Build
 const src = './src';
 const build_root = './build';
 let release_typ = "unknown";
 let dest = build_root + '/' + release_typ;
 let debugging = false;
+
+//Version
+let package_ver_arr = package.version.split('.');
+
 //#endregion
 
 //#region Essential Functions
 
-const dest_stable = (cb) => {
+const release_stable = (cb) => {
     release_typ = "stable";
-    dest = build_root + '/' + release_typ;
     debugging = false;
-    return cb();
+    return build_target(cb);
 };
 
-const dest_beta = (cb) => {
+const release_beta = (cb) => {
     release_typ = "beta";
-    dest = build_root + '/' + release_typ;
     debugging = true;
-    return cb();
+    return build_target(cb);
 };
 
-const dest_alpha = (cb) => {
+const release_alpha = (cb) => {
     release_typ = "alpha";
-    dest = build_root + '/' + release_typ;
     debugging = true;
-    return cb();
+    return build_target(cb);
 };
 
-const dest_test = (cb) => {
+const release_test = (cb) => {
     release_typ = "test";
-    dest = build_root + '/' + release_typ;
     debugging = true;
-    return cb();
+    return build_target(cb);
 };
 
-const clear_dest = () => {
-    return del([`${dest}`]);
-};
-
-const clear_build = () => {
+const clear_build_root = () => {
     return del([`${build_root}`]);
 };
 
-const clear_hook = (cb) => {
+const clear_build_dest = async (cb) => {
+    await del([`${dest}`]);
     if (!fs.existsSync(build_root)) fs.mkdirSync(build_root);
     if (!fs.existsSync(dest)) fs.mkdirSync(dest);
     return cb();
@@ -88,6 +101,11 @@ const clear_hook = (cb) => {
 //#endregion
 
 //#region Build
+
+const build_target = (cb) => {
+    dest = build_root + '/' + release_typ;
+    return cb();
+};
 
 // copy files
 const copy_files = () => {
@@ -192,10 +210,9 @@ const watch = () => gulp.watch(
 //#endregion
 
 //#region Do
-const do_clear = gulp.series(clear_build);
+const do_clear = gulp.series(clear_build_root);
 const do_build = gulp.series(
-    clear_dest,
-    clear_hook,
+    clear_build_dest,
     gulp.parallel(
         copy_files,
         compile_ejs,
@@ -210,14 +227,14 @@ const do_dev = gulp.series(serve, watch);
 
 //#region Tasks
 const task_clear = gulp.task('clear', do_clear);
-const task_stable = gulp.task('stable', gulp.series(dest_stable, do_build));
-const task_beta = gulp.task('beta', gulp.series(dest_beta, do_build));
-const task_alpha = gulp.task('alpha', gulp.series(dest_alpha, do_build));
-const task_test = gulp.task('test', gulp.series(dest_test, do_build));
-const task_dev_stable = gulp.task('dev_stable', gulp.series(dest_stable, do_build, do_dev));
-const task_dev_beta = gulp.task('dev_beta', gulp.series(dest_beta, do_build, do_dev));
-const task_dev_alpha = gulp.task('dev_alpha', gulp.series(dest_alpha, do_build, do_dev));
-const task_dev_test = gulp.task('dev_test', gulp.series(dest_test, do_build, do_dev));
+const task_stable = gulp.task('stable', gulp.series(release_stable, do_build));
+const task_beta = gulp.task('beta', gulp.series(release_beta, do_build));
+const task_alpha = gulp.task('alpha', gulp.series(release_alpha, do_build));
+const task_test = gulp.task('test', gulp.series(release_test, do_build));
+const task_dev_stable = gulp.task('dev_stable', gulp.series(release_stable, do_build, do_dev));
+const task_dev_beta = gulp.task('dev_beta', gulp.series(release_beta, do_build, do_dev));
+const task_dev_alpha = gulp.task('dev_alpha', gulp.series(release_alpha, do_build, do_dev));
+const task_dev_test = gulp.task('dev_test', gulp.series(release_test, do_build, do_dev));
 //#endregion
 
 //#region Exports
