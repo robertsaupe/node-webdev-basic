@@ -102,6 +102,7 @@ const build_target = (cb) => {
         signature:`${date.year}-${date.month}-${date.day}-${date.hours}-${date.minutes}-${date.seconds}`,
         full:`${date.year}-${date.month}-${date.day} ${date.hours}:${date.minutes}:${date.seconds}`
     };
+    delete require.cache[require.resolve(`./package.json`)];//delete cached require
     package = require(`./package.json`);
     package_ver_arr = package.version.split('.');
     return cb();
