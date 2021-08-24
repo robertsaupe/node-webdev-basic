@@ -31,23 +31,9 @@ const terser = require('gulp-terser-js');
 const ico = require('gulp-to-ico');
 const imagemin = require('gulp-imagemin');
 
-// Package
-const package = require(`./package.json`);
-
 //#endregion
 
 //#region Important Variables
-
-// Date
-let date_ob = new Date();
-let day = ("0" + date_ob.getDate()).slice(-2);
-let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-let year = date_ob.getFullYear();
-let hours = ("0" + date_ob.getHours()).slice(-2);
-let minutes = ("0" + date_ob.getMinutes()).slice(-2);
-let seconds = ("0" + date_ob.getSeconds()).slice(-2);
-let date_format = year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
-let date_build = year + "-" + month + "-" + day;
 
 // Build
 const src = './src';
@@ -55,9 +41,9 @@ const build_root = './build';
 let release_typ = "unknown";
 let dest = build_root + '/' + release_typ;
 let debugging = false;
-
-//Version
-let package_ver_arr = package.version.split('.');
+let date = {};
+let package = {};
+let package_ver_arr = [];
 
 //#endregion
 
@@ -104,6 +90,20 @@ const clear_build_dest = async (cb) => {
 
 const build_target = (cb) => {
     dest = build_root + '/' + release_typ;
+    date.obj = new Date();
+    date.day = ("0" + date.obj.getDate()).slice(-2);
+    date.month = ("0" + (date.obj.getMonth() + 1)).slice(-2);
+    date.year = date.obj.getFullYear();
+    date.hours = ("0" + date.obj.getHours()).slice(-2);
+    date.minutes = ("0" + date.obj.getMinutes()).slice(-2);
+    date.seconds = ("0" + date.obj.getSeconds()).slice(-2);
+    date.format = {
+        short:`${date.year}-${date.month}-${date.day}`,
+        signature:`${date.year}-${date.month}-${date.day}-${date.hours}-${date.minutes}-${date.seconds}`,
+        full:`${date.year}-${date.month}-${date.day} ${date.hours}:${date.minutes}:${date.seconds}`
+    };
+    package = require(`./package.json`);
+    package_ver_arr = package.version.split('.');
     return cb();
 };
 
@@ -202,6 +202,7 @@ const watch = () => gulp.watch(
         `${src}/sass/**/*.{sass,scss}`
     ],
     gulp.series(
+        build_target,
         do_build,
         reload
     )
