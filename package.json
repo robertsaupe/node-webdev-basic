@@ -1,7 +1,7 @@
 {
   "name": "node-webdev-basic",
   "version": "0.0.0",
-  "description": "Basic Test/Develop Environment",
+  "description": "basic web/dev environment",
   "type": "module",
   "scripts": {
     "clean": "gulp clear",
