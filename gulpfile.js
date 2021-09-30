@@ -1,35 +1,38 @@
 //#region Imports
 
 // Import important packages
-const gulp = require('gulp');
-const plumber = require('gulp-plumber');
-const rename = require('gulp-rename');
-const sourcemaps = require('gulp-sourcemaps');
-const noop = require("gulp-noop");
-const del = require('del');
-const fs = require('fs');
-const browserSync = require('browser-sync').create();
+import gulp from 'gulp';
+import plumber from 'gulp-plumber';
+import rename from 'gulp-rename';
+import sourcemaps from 'gulp-sourcemaps'
+import noop from 'gulp-noop';
+import del from 'del';
+import fs from 'fs';
+import browserSyncModule from 'browser-sync';
+const browserSync = browserSyncModule.create();
 
 // SASS -> CSS
-const sass = require('gulp-sass')(require('sass'));
-sass.compiler = require('sass');
-const Fiber = require('fibers');
-const postcss = require('gulp-postcss');
-const autoprefixer = require("autoprefixer");
-const cssnano = require("cssnano");
-const cssBase64 = require("gulp-css-base64");
+import sassModule from 'sass';
+import gulpsassModule from 'gulp-sass';
+const sass = gulpsassModule(sassModule);
+sass.compiler = sassModule;
+import Fiber from 'fibers';
+import postcss from 'gulp-postcss';
+import autoprefixer from 'autoprefixer';
+import cssnano from 'cssnano';
+import cssBase64 from 'gulp-css-base64';
 
 // HTML
-const htmlmin = require('gulp-htmlmin');
-const ejs = require('gulp-ejs');
-const minifyInline = require('gulp-minify-inline');
+import htmlmin from 'gulp-htmlmin';
+import ejs from 'gulp-ejs';
+import minifyInline from 'gulp-minify-inline';
 
 // JavaScript
-const terser = require('gulp-terser-js');
+import terser from 'gulp-terser-js';
 
 // Image
-const ico = require('gulp-to-ico');
-const imagemin = require('gulp-imagemin');
+import ico from 'gulp-to-ico';
+import imagemin from 'gulp-imagemin';
 
 //#endregion
 
@@ -42,8 +45,6 @@ let release_typ = "unknown";
 let dest = build_root + '/' + release_typ;
 let debugging = false;
 let date = {};
-let package = {};
-let package_ver_arr = [];
 
 //#endregion
 
@@ -102,9 +103,6 @@ const build_target = (cb) => {
         signature:`${date.year}-${date.month}-${date.day}-${date.hours}-${date.minutes}-${date.seconds}`,
         full:`${date.year}-${date.month}-${date.day} ${date.hours}:${date.minutes}:${date.seconds}`
     };
-    delete require.cache[require.resolve(`./package.json`)];//delete cached require
-    package = require(`./package.json`);
-    package_ver_arr = package.version.split('.');
     return cb();
 };
 
@@ -116,7 +114,8 @@ const copy_files = () => {
 
 // compile .ejs to minified .html
 const compile_ejs = () => {
-    let dict = require(`${src}/ejs/dict.json`)
+    var dict_content = fs.readFileSync(`${src}/ejs/dict.json`);
+    var dict = JSON.parse(dict_content);
     return gulp.src(`${src}/ejs/page/**/*.ejs`)
         .pipe(plumber())
         .pipe(ejs(dict))
@@ -237,22 +236,4 @@ const task_dev_stable = gulp.task('dev_stable', gulp.series(release_stable, do_b
 const task_dev_beta = gulp.task('dev_beta', gulp.series(release_beta, do_build, do_dev));
 const task_dev_alpha = gulp.task('dev_alpha', gulp.series(release_alpha, do_build, do_dev));
 const task_dev_test = gulp.task('dev_test', gulp.series(release_test, do_build, do_dev));
-//#endregion
-
-//#region Exports
-exports.default = task_stable;
-exports.clear = task_clear;
-exports.clean = task_clear;
-exports.build = task_stable;
-exports.release = task_stable;
-exports.stable = task_stable;
-exports.beta = task_beta;
-exports.alpha = task_alpha;
-exports.test = task_test;
-exports.dev_build = task_dev_stable;
-exports.dev_release = task_dev_stable;
-exports.dev_stable = task_dev_stable;
-exports.dev_beta = task_dev_beta;
-exports.dev_alpha = task_dev_alpha;
-exports.dev_test = task_dev_test;
 //#endregion

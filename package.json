@@ -2,7 +2,7 @@
   "name": "node-webdev-basic",
   "version": "0.0.0",
   "description": "Basic Test/Develop Environment",
-  "main": "index.js",
+  "type": "module",
   "scripts": {
     "clean": "gulp clear",
     "clear": "gulp clear",
@@ -47,7 +47,7 @@
     "gulp-css-base64": "^2.0.0",
     "gulp-ejs": "^5.1.0",
     "gulp-htmlmin": "^5.0.1",
-    "gulp-imagemin": "^7.1.0",
+    "gulp-imagemin": "^8.0.0",
     "gulp-minify-inline": "^1.1.0",
     "gulp-noop": "^1.0.1",
     "gulp-plumber": "^1.2.1",
