@@ -27,6 +27,7 @@ This software is distributed under the MIT license. Please read [LICENSE](LICENS
 
 ## Requirements
 - Node.js
+- Gulp
 
 ## Installing
 
