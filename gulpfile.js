@@ -6,7 +6,7 @@ import plumber from 'gulp-plumber';
 import rename from 'gulp-rename';
 import sourcemaps from 'gulp-sourcemaps'
 import noop from 'gulp-noop';
-import del from 'del';
+import {deleteAsync} from 'del';
 import fs from 'fs';
 import browserSyncModule from 'browser-sync';
 const browserSync = browserSyncModule.create();
@@ -75,11 +75,11 @@ const release_test = (cb) => {
 };
 
 const clear_build_root = () => {
-    return del([`${build_root}`]);
+    return deleteAsync([`${build_root}`]);
 };
 
 const clear_build_dest = async (cb) => {
-    await del([`${dest}`]);
+    await deleteAsync([`${dest}`]);
     if (!fs.existsSync(build_root)) fs.mkdirSync(build_root);
     if (!fs.existsSync(dest)) fs.mkdirSync(dest);
     return cb();
