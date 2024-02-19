@@ -12,11 +12,9 @@ import browserSyncModule from 'browser-sync';
 const browserSync = browserSyncModule.create();
 
 // SASS -> CSS
-import sassModule from 'sass';
-import gulpsassModule from 'gulp-sass';
-const sass = gulpsassModule(sassModule);
-sass.compiler = sassModule;
-import Fiber from 'fibers';
+import dartSass from 'sass';
+import gulpSass from 'gulp-sass';
+const sass = gulpSass(dartSass);
 import postcss from 'gulp-postcss';
 import autoprefixer from 'autoprefixer';
 import cssnano from 'cssnano';
@@ -137,10 +135,7 @@ const compile_css = () => {
     return gulp.src(`${src}/sass/**/*.{sass,scss}`)
         .pipe(plumber())
         .pipe(debugging ? sourcemaps.init() : noop())
-        .pipe(sass({
-            includePaths: ['./node_modules'],
-            fiber: Fiber
-        }).on('error', sass.logError))
+        .pipe(sass().on('error', sass.logError))
         .pipe(cssBase64({maxWeightResource: 100000000000}))
         .pipe(rename({ suffix: '.min' }))
         .pipe(postcss([autoprefixer(), cssnano()]))
